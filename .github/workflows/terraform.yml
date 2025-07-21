@@ -33,14 +33,18 @@ jobs:
           aws-region: ${{ env.AWS_REGION }}
 
       - name: Terraform Init
+        working-directory: terraform
         run: terraform init
 
       - name: Terraform Validate
+        working-directory: terraform
         run: terraform validate
 
       - name: Terraform Plan
+        working-directory: terraform
         run: terraform plan
 
       - name: Terraform Apply
+        working-directory: terraform
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         run: terraform apply -auto-approve
