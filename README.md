@@ -46,7 +46,7 @@ This project implements an event-driven IoT data processing pipeline on AWS usin
 
 ```bash
 git clone https://github.com/Pranav5255/IoT-AWS-pipeline.git
-cd iot-aws-pipeline
+cd IoT-AWS-pipeline
 ```
 
 2. Initialize Terraform:
