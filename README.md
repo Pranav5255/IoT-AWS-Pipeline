@@ -64,6 +64,19 @@ terraform plan
 terraform apply
 ```
 
+### Lambda
+- When it comes to the implementation of Lambda function, if you are developing using Windows Machine, I would suggest that you only allocate the resources to create the Lambda function using IaC or AWS CLI. But do not zip the python dependencies from your pc to AWS.
+- This is because, AWS Lambda heavily utilises Linux Infrastructure to provide its serverless categories and the Windows Dependencies of Python are not compatible with the AWS Infra. It may appear that your python logic has been suucessfully deployed. But when you try to test the pipeline, it returns with the following error:
+  ```
+  {"errorMessage": "module 'os' has no attribute 'add_dll_directory'", "errorType": "AttributeError", "requestId": "", "stackTrace": ["  File \"/var/lang/lib/python3.11/importlib/__init__.py\", line 126, in import_module\n    return _bootstrap._gcd_import(name[level:], package, level)\n", "  File \"<frozen importlib._bootstrap>\", line 1204, in _gcd_import\n", "  File \"<frozen importlib._bootstrap>\", line 1176, in _find_and_load\n", "  File \"<frozen importlib._bootstrap>\", line 1147, in _find_and_load_unlocked\n", "  File \"<frozen importlib._bootstrap>\", line 690, in _load_unlocked\n", "  File \"<frozen importlib._bootstrap_external>\", line 940, in exec_module\n", "  File \"<frozen importlib._bootstrap>\", line 241, in _call_with_frames_removed\n", "  File \"/var/task/daily_report_generator.py\", line 2, in <module>\n    import pandas as pd\n", "  File \"/var/task/pandas/__init__.py\", line 11, in <module>\n    _delvewheel_patch_1_10_1()\n", "  File \"/var/task/pandas/__init__.py\", line 8, in _delvewheel_patch_1_10_1\n    os.add_dll_directory(libs_dir)\n"]}
+  ```
+- If you run this CI/CD pipeline, majority of the resources will be set up, you'll just manually have to set the layer in the function. In the Functions menu:
+  Layers > Add a Layer > Specify an ARN:
+  ```
+  arn:aws:lambda:ap-south-1:336392948345:layer:AWSSDKPandas-Python311-Arm64:22
+  ```
+- This is the ARN I am using for upholding the Python Logic and it is doing a spledid job of holding it up.
+- You can find more ARNs from [this link](https://aws-sdk-pandas.readthedocs.io/en/stable/layers.html).
 ---
 
 ## Simulating IoT Data
