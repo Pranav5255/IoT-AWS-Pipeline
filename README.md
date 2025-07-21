@@ -108,6 +108,7 @@ IoT-AWS-Pipeline/
 ├── lambda/
 │   └── daily_report_generator.py
 ├── terraform/
+│   ├── main.tf
 │   ├── variables.tf
 │   ├── outputs.tf
 │   ├── provider.tf
