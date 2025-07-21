@@ -125,6 +125,12 @@ resource "aws_iam_role_policy_attachment" "lambda_policy_attach" {
   //source_code_hash = filebase64sha256("${path.module}/../lambda/daily_report_generator.zip")
 //}
 
+data "aws_lambda_function" "daily_report" {
+  function_name = data.aws_lambda_function.daily_report.function_name
+  arn = data.aws_lambda_function.daily_report.arn
+
+}
+
 resource "aws_cloudwatch_event_rule" "daily_trigger" {
   name                = "${var.project_name}_daily_trigger"
   schedule_expression = "cron(0 0 * * ? *)"  # Daily at 00:00 UTC
