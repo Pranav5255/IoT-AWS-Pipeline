@@ -1,3 +1,4 @@
-lambda/*
-!lambda/daily_report_generator.py
+lambda/cleanenv
+lambda/build/python
 terraform/.terraform
+lambda/daily_build_generator
