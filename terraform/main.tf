@@ -133,13 +133,13 @@ resource "aws_cloudwatch_event_rule" "daily_trigger" {
 resource "aws_cloudwatch_event_target" "trigger_lambda" {
   rule      = aws_cloudwatch_event_rule.daily_trigger.name
   target_id = "lambda"
-  arn       = aws_lambda_function.daily_report.arn
+  arn       = "arn:aws:lambda:ap-south-1:075212636906:function=${var.project_name}_daily_report"  # Hardcoded ARN if function exists already
 }
 
 resource "aws_lambda_permission" "allow_events" {
   statement_id  = "AllowExecutionFromCloudWatch"
   action        = "lambda:InvokeFunction"
-  function_name = aws_lambda_function.daily_report.function_name
+  function_name = "${var.project_name}_daily_report"  # Just the name, not referencing a removed resource
   principal     = "events.amazonaws.com"
   source_arn    = aws_cloudwatch_event_rule.daily_trigger.arn
 }
