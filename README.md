@@ -14,8 +14,9 @@ This project implements an event-driven IoT data processing pipeline on AWS usin
 ---
 
 ## Architecture
-
-
+<p align="center">  
+  <img src="./assets/architecture.png" alt="Project Logo">  
+</p>
 
 ---
 
