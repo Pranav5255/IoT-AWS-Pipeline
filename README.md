@@ -45,7 +45,7 @@ This project implements an event-driven IoT data processing pipeline on AWS usin
 1. Clone this repo:
 
 ```bash
-git clone https://github.com/<your-username>/iot-aws-pipeline.git
+git clone https://github.com/Pranav5255/IoT-AWS-pipeline.git
 cd iot-aws-pipeline
 ```
 
