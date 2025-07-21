@@ -113,17 +113,17 @@ resource "aws_iam_role_policy_attachment" "lambda_policy_attach" {
   policy_arn = aws_iam_policy.lambda_s3_policy.arn
 }
 
-resource "aws_lambda_function" "daily_report" {
-  function_name = "${var.project_name}_daily_report"
-  role          = aws_iam_role.lambda_exec_role.arn
-  handler       = "daily_report_generator.lambda_handler"
-  runtime       = "python3.11"
-  timeout       = 30
-  memory_size   = 256
+//resource "aws_lambda_function" "daily_report" {
+  //function_name = "${var.project_name}_daily_report"
+  //role          = aws_iam_role.lambda_exec_role.arn
+  //handler       = "daily_report_generator.lambda_handler"
+  //runtime       = "python3.11"
+  //timeout       = 30
+  //memory_size   = 256
 
-  filename         = "${path.module}/../lambda/daily_report_generator.zip"
-  source_code_hash = filebase64sha256("${path.module}/../lambda/daily_report_generator.zip")
-}
+  //filename         = "${path.module}/../lambda/daily_report_generator.zip"
+  //source_code_hash = filebase64sha256("${path.module}/../lambda/daily_report_generator.zip")
+//}
 
 resource "aws_cloudwatch_event_rule" "daily_trigger" {
   name                = "${var.project_name}_daily_trigger"
