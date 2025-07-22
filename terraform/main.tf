@@ -113,22 +113,16 @@ resource "aws_iam_role_policy_attachment" "lambda_policy_attach" {
   policy_arn = aws_iam_policy.lambda_s3_policy.arn
 }
 
-//resource "aws_lambda_function" "daily_report" {
-  //function_name = "${var.project_name}_daily_report"
-  //role          = aws_iam_role.lambda_exec_role.arn
-  //handler       = "daily_report_generator.lambda_handler"
-  //runtime       = "python3.11"
-  //timeout       = 30
-  //memory_size   = 256
+resource "aws_lambda_function" "daily_report" {
+  function_name = "${var.project_name}_daily_report"
+  role          = aws_iam_role.lambda_exec_role.arn
+  handler       = "daily_report_generator.lambda_handler"
+  runtime       = "python3.11"
+  timeout       = 30
+  memory_size   = 256
 
-  //filename         = "${path.module}/../lambda/daily_report_generator.zip"
-  //source_code_hash = filebase64sha256("${path.module}/../lambda/daily_report_generator.zip")
-//}
-
-data "aws_lambda_function" "daily_report" {
-  function_name = data.aws_lambda_function.daily_report.function_name
-  arn = data.aws_lambda_function.daily_report.arn
-
+  filename         = "${path.module}/../lambda/daily_report_generator.zip"
+  source_code_hash = filebase64sha256("${path.module}/../lambda/daily_report_generator.zip")
 }
 
 resource "aws_cloudwatch_event_rule" "daily_trigger" {
@@ -139,13 +133,13 @@ resource "aws_cloudwatch_event_rule" "daily_trigger" {
 resource "aws_cloudwatch_event_target" "trigger_lambda" {
   rule      = aws_cloudwatch_event_rule.daily_trigger.name
   target_id = "lambda"
-  arn       = "arn:aws:lambda:ap-south-1:075212636906:function=${var.project_name}_daily_report"  # Hardcoded ARN if function exists already
+  arn       = aws_lambda_function.daily_report.arn
 }
 
 resource "aws_lambda_permission" "allow_events" {
   statement_id  = "AllowExecutionFromCloudWatch"
   action        = "lambda:InvokeFunction"
-  function_name = "${var.project_name}_daily_report"  # Just the name, not referencing a removed resource
+  function_name = aws_lambda_function.daily_report.function_name
   principal     = "events.amazonaws.com"
   source_arn    = aws_cloudwatch_event_rule.daily_trigger.arn
 }
