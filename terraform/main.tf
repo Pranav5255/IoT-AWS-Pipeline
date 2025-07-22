@@ -91,13 +91,14 @@ resource "aws_iam_policy" "lambda_s3_policy" {
         Effect = "Allow",
         Action = [
           "s3:GetObject",
-          "s3:PutObject",
-          "s3:ListBucket"
+          "s3:PutObject"
         ],
-        Resource = [
-          "${aws_s3_bucket.iot_data_bucket.arn}",
-          "${aws_s3_bucket.iot_data_bucket.arn}/*"
-        ]
+        Resource = "${aws_s3_bucket.iot_data_bucket.arn}/*"
+      },
+      {
+        Effect = "Allow",
+        Action = "s3:ListBucket",
+        Resource = "${aws_s3_bucket.iot_data_bucket.arn}"
       },
       {
         Effect = "Allow",
